@@ -22,9 +22,7 @@ export default function Index() {
 	return (
 		<>
 			<Content style={{ padding: '20px 50px' }}>
-				<div className="site-layout-content">
-					<AddChar onAdd={onAdd} />
-				</div>
+				<AddChar onAdd={onAdd} />
 			</Content>
 			<Content className={styles.cards}>
 				{chars &&

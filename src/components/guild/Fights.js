@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 import useAuthToken from '../../helpers/useAuthToken';
 
-import { Layout } from 'antd';
-const { Content } = Layout;
+// import { Layout } from 'antd';
+// const { Content } = Layout;
 
 const fightsQuery = ({ code }) => `
 {
@@ -56,7 +56,6 @@ export default function Fights({ code }) {
 	}, [token, setResp, code]);
 
 	const fights = resp?.data?.reportData?.report?.fights;
-	console.log(fights);
 
-	return <div>{fights && fights.map(fight => <Fight>{fight.name}</Fight>)}</div>;
+	return <div>{fights && fights.map(fight => <Fight key={fight.name}>{fight.name}</Fight>)}</div>;
 }

@@ -3,8 +3,10 @@ import axios from 'axios';
 import styled from 'styled-components';
 
 import useAuthToken from '../../helpers/useAuthToken';
+import useLocalStorage from '../../helpers/useLocalStorage';
 
 import Fights from './Fights';
+import SelectGuild from './SelectGuild';
 
 import { Layout } from 'antd';
 const { Content } = Layout;
@@ -50,7 +52,12 @@ function groupByZone(atts) {
 
 export default function Index() {
 	const token = useAuthToken();
-	const [guild, setGuild] = useState();
+	const [response, setResponse] = useState();
+	const [guild, setGuild] = useLocalStorage('guild', {
+		guild: 'season zero',
+		server: 'frostmourne',
+		region: 'us',
+	});
 
 	useEffect(() => {
 		const config = {
@@ -60,25 +67,24 @@ export default function Index() {
 			.post(
 				'https://www.warcraftlogs.com/api/v2/client',
 				{
-					query: attendanceQuery({
-						guild: 'season zero',
-						server: 'frostmourne',
-						region: 'us',
-					}),
+					query: attendanceQuery(guild),
 				},
 				config
 			)
 			.then(resp => {
-				setGuild(resp?.data?.data?.guildData?.guild);
+				setResponse(resp?.data?.data?.guildData?.guild);
 			})
 			.catch(console.error);
-	}, [token, setGuild]);
+	}, [token, setResponse, guild]);
 
-	const atnData = guild?.attendance.data;
+	const atnData = response?.attendance.data;
 	const byZone = useMemo(() => groupByZone(atnData), [atnData]);
 
 	return (
 		<>
+			<Content style={{ padding: '20px 50px' }}>
+				<SelectGuild guild={guild} onChange={setGuild} />
+			</Content>
 			<Content style={{ padding: '20px 50px' }}>
 				{byZone
 					? Object.keys(byZone).map(key => {
