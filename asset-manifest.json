@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/wow-char-stats/static/css/main.b05dfa11.chunk.css",
+    "main.js": "/wow-char-stats/static/js/main.7d385af0.chunk.js",
+    "main.js.map": "/wow-char-stats/static/js/main.7d385af0.chunk.js.map",
+    "runtime-main.js": "/wow-char-stats/static/js/runtime-main.b546c454.js",
+    "runtime-main.js.map": "/wow-char-stats/static/js/runtime-main.b546c454.js.map",
+    "static/css/2.5bc206ac.chunk.css": "/wow-char-stats/static/css/2.5bc206ac.chunk.css",
+    "static/js/2.a1949c69.chunk.js": "/wow-char-stats/static/js/2.a1949c69.chunk.js",
+    "static/js/2.a1949c69.chunk.js.map": "/wow-char-stats/static/js/2.a1949c69.chunk.js.map",
+    "index.html": "/wow-char-stats/index.html",
+    "static/css/2.5bc206ac.chunk.css.map": "/wow-char-stats/static/css/2.5bc206ac.chunk.css.map",
+    "static/css/main.b05dfa11.chunk.css.map": "/wow-char-stats/static/css/main.b05dfa11.chunk.css.map",
+    "static/js/2.a1949c69.chunk.js.LICENSE.txt": "/wow-char-stats/static/js/2.a1949c69.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.b546c454.js",
+    "static/css/2.5bc206ac.chunk.css",
+    "static/js/2.a1949c69.chunk.js",
+    "static/css/main.b05dfa11.chunk.css",
+    "static/js/main.7d385af0.chunk.js"
+  ]
+}
