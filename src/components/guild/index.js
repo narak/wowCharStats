@@ -1,11 +1,104 @@
-import { Layout } from 'antd';
+import { useEffect, useState, useMemo } from 'react';
+import axios from 'axios';
+import styled from 'styled-components';
 
+import useAuthToken from '../../helpers/useAuthToken';
+
+import Fights from './Fights';
+
+import { Layout } from 'antd';
 const { Content } = Layout;
 
+const attendanceQuery = ({ guild, server, region, pageSize = 5, page = 1 }) => `
+{
+    guildData {
+        guild(
+            name: "${guild}"
+            serverSlug: "${server}"
+            serverRegion: "${region}"
+        ) {
+            attendance(
+                limit: ${pageSize}
+                page: ${page}
+            ) {
+                total
+                last_page
+                data {
+                    code
+                    startTime
+                    zone {
+                        name
+                    }
+                }
+            }
+        }
+    }
+}`;
+
+const Group = styled.div`
+	margin-bottom: 2rem;
+`;
+
+function groupByZone(atts) {
+	const byZone = {};
+	atts?.forEach(att => {
+		byZone[att.zone.name] = byZone[att.zone.name] || [];
+		byZone[att.zone.name].push({ startTime: att.startTime, code: att.code });
+	});
+	return byZone;
+}
+
 export default function Index() {
+	const token = useAuthToken();
+	const [guild, setGuild] = useState();
+
+	useEffect(() => {
+		const config = {
+			headers: { Authorization: `Bearer ${token}` },
+		};
+		axios
+			.post(
+				'https://www.warcraftlogs.com/api/v2/client',
+				{
+					query: attendanceQuery({
+						guild: 'season zero',
+						server: 'frostmourne',
+						region: 'us',
+					}),
+				},
+				config
+			)
+			.then(resp => {
+				setGuild(resp?.data?.data?.guildData?.guild);
+			})
+			.catch(console.error);
+	}, [token, setGuild]);
+
+	const atnData = guild?.attendance.data;
+	const byZone = useMemo(() => groupByZone(atnData), [atnData]);
+
 	return (
 		<>
-			<Content style={{ padding: '20px 50px' }}>Hello Guild World!</Content>
+			<Content style={{ padding: '20px 50px' }}>
+				{byZone
+					? Object.keys(byZone).map(key => {
+							return (
+								<div key={key}>
+									<h3>{key}</h3>
+									{byZone[key].map((data, index) => {
+										console.log(data);
+										return (
+											<Group key={index}>
+												{new Date(data.startTime).toLocaleString()}{' '}
+												<Fights code={data.code} />
+											</Group>
+										);
+									})}
+								</div>
+							);
+					  })
+					: null}
+			</Content>
 		</>
 	);
 }
