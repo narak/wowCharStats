@@ -47,13 +47,13 @@ export default function SelectGuild({ guild: _guild, onChange: _onChangeParent }
 					type="text"
 					name="guild"
 					value={guild.guild}
-					placeholder="Character"
+					placeholder="Guild"
 					onChange={onChange.bind(this, 'guild')}
 				/>
 			</div>
 			<div className={styles.field}>
 				<Button type="primary" htmlType="submit">
-					Add
+					Select
 				</Button>
 			</div>
 		</form>
