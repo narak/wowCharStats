@@ -3,7 +3,7 @@ import styles from './char.module.css';
 import { Fragment } from 'react';
 import styled from 'styled-components';
 
-import useCharStats from '../helpers/useCharStats';
+import useCharStats from '../../helpers/useCharStats';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { Card, Avatar, Divider } from 'antd';
 

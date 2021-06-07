@@ -2,10 +2,3 @@
     padding: 0;
     line-height: 1.6rem;
 }
-
-.cards {
-    padding: 0 50px 20px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 20px;
-}
