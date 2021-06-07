@@ -1,10 +1,17 @@
 import styles from './char.module.css';
 
 import { Fragment } from 'react';
+import styled from 'styled-components';
 
 import useCharStats from '../helpers/useCharStats';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { Card, Avatar, Divider } from 'antd';
+
+const Crawled = styled.div`
+	opacity: 0.8;
+	margin-top: 10px;
+	font-size: 0.8rem;
+`;
 
 export default function Char({ char, onDelete }) {
 	const rio = useCharStats(char);
@@ -87,6 +94,7 @@ export default function Char({ char, onDelete }) {
 					);
 				})}
 			</div>
+			<Crawled>Last crawled at {new Date(rio.last_crawled_at).toLocaleString()}</Crawled>
 		</Card>
 	);
 }
