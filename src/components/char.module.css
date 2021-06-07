@@ -1,0 +1,39 @@
+.avatarAnnex {
+	margin-left: 60px;
+}
+
+.avatar {
+	position: absolute;
+	opacity: 0.8;
+	top: 16px;
+	left: 20px;
+	height: 50px;
+	width: 50px;
+}
+
+.card:hover .delete {
+	opacity: 1;
+	visibility: visible;
+}
+
+.delete {
+	position: absolute;
+	top: 20px;
+	right: 27px;
+	transition: opacity 200ms;
+	color: #b9b9b9;
+}
+
+.delete svg {
+	width: 20px;
+	height: 20px;
+}
+
+.subscore {
+	margin-right: 10px;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: auto auto auto auto;
+}

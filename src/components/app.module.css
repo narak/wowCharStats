@@ -1,0 +1,11 @@
+.app {
+    padding: 20px 40px;
+    line-height: 1.6rem;
+}
+
+.cards {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 20px;
+}

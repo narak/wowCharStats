@@ -1,9 +1,92 @@
-// const url =
-//     'https://raider.io/api/v1/characters/profile?region=us&realm=frostmourne&name=moirelina&fields=mythic_plus_scores_by_season:current,mythic_plus_best_runs';
-// fetch(url)
-//     .then(resp => resp.json())
-//     .then(console.log);
+import styles from './char.module.css';
 
-export default function Char({ char }) {
-	return <div>{JSON.stringify(char)}</div>;
+import { Fragment } from 'react';
+
+import useCharStats from '../helpers/useCharStats';
+import { CloseCircleOutlined } from '@ant-design/icons';
+import { Card, Avatar, Divider } from 'antd';
+
+export default function Char({ char, onDelete }) {
+	const rio = useCharStats(char);
+
+	if (!rio) {
+		return null;
+	}
+
+	if (rio.error) {
+		return (
+			<Card className={styles.card}>
+				<CloseCircleOutlined onClick={onDelete} className={styles.delete} />
+				<strong>{rio.error}</strong>
+				<p>{rio.message}</p>
+			</Card>
+		);
+	}
+
+	const currentScores = rio.mythic_plus_scores_by_season[0].scores;
+	const bestRuns = rio.mythic_plus_best_runs;
+
+	const title = (
+		<>
+			<Avatar src={rio.thumbnail_url} className={styles.avatar} />
+			<a
+				href={rio.profile_url}
+				target="_blank"
+				rel="noreferrer"
+				className={styles.avatarAnnex}
+			>
+				<strong>{rio.name}</strong>
+				<small style={{ marginLeft: '10px' }}>
+					{rio.race} {rio.class}
+				</small>
+			</a>
+		</>
+	);
+	return (
+		<Card className={styles.card}>
+			<Card.Meta title={title} />
+			<CloseCircleOutlined onClick={onDelete} className={styles.delete} />
+			<h3 className={styles.avatarAnnex}>{currentScores.all}</h3>
+			{currentScores.tank ? (
+				<span className={styles.subscore}>
+					<strong>Tank</strong>: {currentScores.tank}
+				</span>
+			) : null}
+			{currentScores.healer ? (
+				<span className={styles.subscore}>
+					<strong>Healer</strong>: {currentScores.healer}
+				</span>
+			) : null}
+			{currentScores.dps ? (
+				<span className={styles.subscore}>
+					<strong>DPS</strong>: {currentScores.dps}
+				</span>
+			) : null}
+			<Divider />
+			<div className={styles.grid}>
+				<div>
+					<strong>Dungeon</strong>
+				</div>
+				<div>
+					<strong>Level</strong>
+				</div>
+				<div>
+					<strong>Score</strong>
+				</div>
+				<div>
+					<strong>+?</strong>
+				</div>
+				{bestRuns.map(run => {
+					return (
+						<Fragment key={run.dungeon}>
+							<div>{run.dungeon}</div>
+							<div>{run.mythic_level}</div>
+							<div>{run.score}</div>
+							<div>{run.num_keystone_upgrades}</div>
+						</Fragment>
+					);
+				})}
+			</div>
+		</Card>
+	);
 }
