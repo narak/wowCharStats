@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function serialize(char) {
 	return `${char.region}:${char.server}:${char.char}`;
@@ -18,14 +19,21 @@ export default function useCharStats(char) {
 	useEffect(() => {
 		if (!charStats[key]) {
 			console.log('Fetching', key);
-			fetch(url(char))
-				.then(resp => resp.json())
-				.then(json => {
-					_charStats[key] = json;
+			axios
+				.get(url(char))
+				.then(resp => {
+					_charStats[key] = resp.data;
 					setCharStats({
 						...charStats,
-						[key]: json,
+						[key]: resp.data,
 					});
+				})
+				.catch(function (error) {
+					setCharStats({
+						...charStats,
+						[key]: error.response.data,
+					});
+					console.log(error);
 				});
 		}
 	}, [key, char, charStats, setCharStats]);
