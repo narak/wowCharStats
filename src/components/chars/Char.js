@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 import styled from 'styled-components';
 
 import useCharStats from '../../helpers/useCharStats';
-import { CloseCircleOutlined } from '@ant-design/icons';
+import { DeleteFilled } from '@ant-design/icons';
 import { Card, Avatar, Divider } from 'antd';
 
 const Crawled = styled.div`
@@ -23,9 +23,9 @@ export default function Char({ char, onDelete }) {
 	if (rio.error) {
 		return (
 			<Card className={styles.card}>
-				<CloseCircleOutlined onClick={onDelete} className={styles.delete} />
 				<strong>{rio.error}</strong>
 				<p>{rio.message}</p>
+				<DeleteFilled onClick={onDelete} className={styles.delete} />
 			</Card>
 		);
 	}
@@ -52,8 +52,10 @@ export default function Char({ char, onDelete }) {
 	return (
 		<Card className={styles.card}>
 			<Card.Meta title={title} />
-			<CloseCircleOutlined onClick={onDelete} className={styles.delete} />
-			<h3 className={styles.avatarAnnex}>{currentScores.all}</h3>
+			<h3 className={styles.mainScore}>{currentScores.all}</h3>
+			<h3 className={styles.avatarAnnex}>
+				<DeleteFilled onClick={onDelete} className={styles.icon} />
+			</h3>
 			{currentScores.tank ? (
 				<span className={styles.subscore}>
 					<strong>Tank</strong>: {currentScores.tank}

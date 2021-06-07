@@ -25,7 +25,6 @@ function App() {
     return (
         <Layout className={styles.app}>
             <Header>
-                <div className="logo" />
                 <Menu theme="dark" mode="horizontal" selectedKeys={tab} onClick={onChangeTab}>
                     <Menu.Item key="chars">Characters</Menu.Item>
                     <Menu.Item key="guild">Guild Logs</Menu.Item>

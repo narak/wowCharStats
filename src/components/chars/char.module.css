@@ -11,17 +11,25 @@
 	width: 50px;
 }
 
-.card:hover .delete {
+.card:hover .icon {
 	opacity: 1;
 	visibility: visible;
 }
 
-.delete {
+.icon {
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 200ms;
+	color: #b9b9b9;
+}
+
+.mainScore {
 	position: absolute;
 	top: 20px;
 	right: 27px;
 	transition: opacity 200ms;
-	color: #b9b9b9;
+	font-weight: 700;
+	font-size: 1.4rem;
 }
 
 .delete svg {
