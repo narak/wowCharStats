@@ -3,13 +3,13 @@ import styles from './index.module.css';
 import useLocalStorage from '../../helpers/useLocalStorage';
 
 import { Layout } from 'antd';
-import AddChar from './AddChar';
+import AddChar from '../common/AddChar';
 import Char from './Char';
 
 const { Content } = Layout;
 
 export default function Index() {
-	const [chars, setChars] = useLocalStorage('chars', []);
+	const [chars, setChars] = useLocalStorage('raiderio', []);
 
 	function onAdd(char) {
 		setChars([...chars, char]);

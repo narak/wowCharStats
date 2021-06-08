@@ -2,18 +2,18 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 function serialize(char) {
-	return `${char.region}:${char.server}:${char.char}`;
+	return `${char.region}:${char.server}:${char.name}`;
 }
 
 function url(char) {
-	return `https://raider.io/api/v1/characters/profile?region=${char.region}&realm=${char.server}&name=${char.char}&fields=mythic_plus_scores_by_season:current,mythic_plus_best_runs`;
+	return `https://raider.io/api/v1/characters/profile?region=${char.region}&realm=${char.server}&name=${char.name}&fields=mythic_plus_scores_by_season:current,mythic_plus_best_runs`;
 }
 
 const _charStats = {};
 window.charStats = _charStats;
 console.log('See `charStats` to view fetched RIO data.');
 
-export default function useCharStats(char) {
+export default function useRaiderIOStats(char) {
 	const key = serialize(char);
 	const [charStats, setCharStats] = useState(_charStats);
 	useEffect(() => {

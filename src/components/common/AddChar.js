@@ -6,7 +6,7 @@ import { Button, Input, Select } from 'antd';
 const { Option } = Select;
 
 export default function AddChar({ onAdd }) {
-    const [char, setChar] = useState({ region: 'us', server: '', char: '' });
+    const [char, setChar] = useState({ region: 'us', server: '', name: '' });
     function onSubmit(e) {
         e.preventDefault();
         onAdd(char);
@@ -47,9 +47,9 @@ export default function AddChar({ onAdd }) {
                 <Input
                     type="text"
                     name="char"
-                    value={char.char}
+                    value={char.name}
                     placeholder="Character"
-                    onChange={onChange.bind(this, 'char')}
+                    onChange={onChange.bind(this, 'name')}
                 />
             </div>
             <div className={styles.field}>

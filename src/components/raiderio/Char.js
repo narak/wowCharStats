@@ -3,7 +3,7 @@ import styles from './char.module.css';
 import { Fragment } from 'react';
 import styled from 'styled-components';
 
-import useCharStats from '../../helpers/useCharStats';
+import useRaiderIOStats from '../../helpers/useRaiderIOStats';
 import { DeleteFilled } from '@ant-design/icons';
 import { Card, Avatar, Divider } from 'antd';
 
@@ -14,7 +14,7 @@ const Crawled = styled.div`
 `;
 
 export default function Char({ char, onDelete }) {
-	const rio = useCharStats(char);
+	const rio = useRaiderIOStats(char);
 
 	if (!rio) {
 		return null;
