@@ -29,11 +29,11 @@ export default function useRaiderIOStats(char) {
 					});
 				})
 				.catch(function (error) {
+					console.log(error);
 					setRIOStats({
 						...rioStats,
-						[key]: error.response.data,
+						[key]: error?.response?.data || error,
 					});
-					console.log(error);
 				});
 		}
 	}, [key, char, rioStats, setRIOStats]);

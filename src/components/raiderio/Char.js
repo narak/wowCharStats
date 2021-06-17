@@ -7,6 +7,8 @@ import useRaiderIOStats from '../../helpers/useRaiderIOStats';
 import { DeleteFilled } from '@ant-design/icons';
 import { Card, Avatar, Divider } from 'antd';
 
+import LFGFilter from './LFGFilter';
+
 const Crawled = styled.div`
 	opacity: 0.8;
 	margin-top: 10px;
@@ -97,6 +99,9 @@ export default function Char({ char, onDelete }) {
 				})}
 			</div>
 			<Crawled>Last crawled at {new Date(rio.last_crawled_at).toLocaleString()}</Crawled>
+			<div className={styles.onHover}>
+				<LFGFilter runs={bestRuns} />
+			</div>
 		</Card>
 	);
 }

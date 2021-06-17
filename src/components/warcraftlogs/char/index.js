@@ -16,6 +16,7 @@ function consolidateByBoss(prevStats, allStats) {
 	let newByBoss = byBoss,
 		newBosses = bosses;
 
+	// eslint-disable-next-line
 	for (const key in allStats) {
 		const val = allStats[key];
 
@@ -29,7 +30,7 @@ function consolidateByBoss(prevStats, allStats) {
 			newByBoss = { ...byBoss };
 		}
 
-		newByBoss[name] = rankings.map(rank => {
+		newByBoss[name] = rankings?.map(rank => {
 			const boss = rank.encounter.name;
 
 			if (!bosses[boss]) {
@@ -78,6 +79,7 @@ export default function Index() {
 
 	return (
 		<>
+			<h1>Under construction</h1>
 			<Content style={{ padding: '20px 50px' }}>
 				<AddChar onAdd={onAdd} />
 			</Content>
