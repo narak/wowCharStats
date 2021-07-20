@@ -3,6 +3,7 @@
 import { /*useEffect, useState, */ useMemo } from 'react';
 
 import { Zone, Difficulty } from '../../../constants/WarcraftLogs';
+import { ShortName } from '../../../constants/Boss';
 
 import useLocalStorage from '../../../helpers/useLocalStorage';
 import useWLCharStats from '../../../helpers/useWLCharStats';
@@ -87,7 +88,7 @@ export default function Index() {
 			columns = stats.bosses.reduce((acc, boss) => {
 				if (!bossMap || bossMap[boss]) {
 					acc.push({
-						title: boss,
+						title: ShortName[boss],
 						dataIndex: boss,
 						key: boss,
 						defaultSortOrder: 'descend',
