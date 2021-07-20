@@ -52,6 +52,11 @@ export default function Index() {
 	const [bosses, setBosses] = useLocalStorage('bosses', {});
 	const allStats = useWLCharStats({ zoneId, chars });
 
+	const bossMap = bosses[zoneId]?.reduce((acc, boss) => {
+		acc[boss] = true;
+		return acc;
+	}, {});
+
 	const stats = useMemo(() => {
 		return consolidateByBoss(allStats);
 	}, [allStats]);
@@ -61,24 +66,31 @@ export default function Index() {
 		setChars([...chars, char]);
 	}
 
-	function onDelete(index) {
-		setChars([...chars.slice(0, index), ...chars.slice(index + 1)]);
-	}
-
 	function onChangeSelectedBosses(value) {
 		setBosses({ ...bosses, [zoneId]: value });
 	}
 
 	const columns = useMemo(() => {
+		function onDelete(index) {
+			setChars([...chars.slice(0, index), ...chars.slice(index + 1)]);
+		}
+
 		let columns;
 		if (stats.bosses.length) {
-			columns = stats.bosses.map(boss => {
-				return {
-					title: boss,
-					dataIndex: boss,
-					key: boss,
-				};
-			});
+			columns = stats.bosses.reduce((acc, boss) => {
+				if (bossMap[boss]) {
+					acc.push({
+						title: boss,
+						dataIndex: boss,
+						key: boss,
+						defaultSortOrder: 'descend',
+						sorter: (a, b) => {
+							return a[boss] - b[boss];
+						},
+					});
+				}
+				return acc;
+			}, []);
 		} else {
 			columns = [];
 		}
@@ -97,7 +109,7 @@ export default function Index() {
 				},
 			},
 		];
-	}, [stats]);
+	}, [stats, chars, setChars, bossMap]);
 
 	const dataSource = useMemo(() => {
 		const dataSource = [];
@@ -109,7 +121,9 @@ export default function Index() {
 						name,
 						key: name,
 						...stats.byBoss[name].reduce((acc, val) => {
-							acc[val.boss] = val.bestAmount.toFixed(2);
+							if (bossMap[val.boss]) {
+								acc[val.boss] = val.bestAmount.toFixed(2);
+							}
 							return acc;
 						}, {}),
 					});
@@ -117,12 +131,11 @@ export default function Index() {
 			});
 		}
 		return dataSource;
-	}, [stats, chars]);
+	}, [stats, chars, bossMap]);
 
 	return (
 		<>
-			<h1>Under construction</h1>
-			<Content style={{ padding: '10px 50px' }}>
+			<Content style={{ padding: '50px 50px 10px' }}>
 				<AddChar onAdd={onAdd} />
 			</Content>
 			<Content style={{ padding: '10px 50px' }}>
@@ -135,24 +148,9 @@ export default function Index() {
 					onChange={onChangeSelectedBosses}
 				/>
 			</Content>
-			<Content style={{ padding: '10px 50px 20px' }}>
+			<Content style={{ padding: '20px 50px' }}>
 				<Table dataSource={dataSource} columns={columns} pagination={false} />
 			</Content>
-			{/*<Content style={{ padding: '10px 50px 20px' }}>
-				{chars?.map((char, index) => {
-					return (
-						<div key={index}>
-							<pre>{JSON.stringify(char, undefined, '  ')}</pre>
-							{stats && stats.byBoss && stats.byBoss[char.name] ? (
-								<pre>
-									{JSON.stringify(stats.byBoss[char.name], undefined, '  ')}
-								</pre>
-							) : null}
-							<button onClick={onDelete.bind(this, index)}>delete</button>
-						</div>
-					);
-				})}
-			</Content>*/}
 		</>
 	);
 }
