@@ -7,7 +7,8 @@ import { Zone } from '../../../constants/WarcraftLogs';
 import useLocalStorage from '../../../helpers/useLocalStorage';
 import useWLCharStats from '../../../helpers/useWLCharStats';
 
-import { Layout } from 'antd';
+import { Layout, Table } from 'antd';
+import { DeleteFilled } from '@ant-design/icons';
 import AddChar from '../../common/AddChar';
 import ZoneSelector from './ZoneSelector';
 import BossSelector from './BossSelector';
@@ -54,6 +55,7 @@ export default function Index() {
 	const stats = useMemo(() => {
 		return consolidateByBoss(allStats);
 	}, [allStats]);
+	window.wlDPSStats = stats;
 
 	function onAdd(char) {
 		setChars([...chars, char]);
@@ -67,7 +69,55 @@ export default function Index() {
 		setBosses({ ...bosses, [zoneId]: value });
 	}
 
-	window.wlDPSStats = stats;
+	const columns = useMemo(() => {
+		let columns;
+		if (stats.bosses.length) {
+			columns = stats.bosses.map(boss => {
+				return {
+					title: boss,
+					dataIndex: boss,
+					key: boss,
+				};
+			});
+		} else {
+			columns = [];
+		}
+		return [
+			{
+				title: 'Name',
+				dataIndex: 'name',
+				key: 'name',
+			},
+			...columns,
+			{
+				dataIndex: 'action',
+				key: 'action',
+				render: (text, record, index) => {
+					return <DeleteFilled onClick={onDelete.bind(this, index)} />;
+				},
+			},
+		];
+	}, [stats]);
+
+	const dataSource = useMemo(() => {
+		const dataSource = [];
+
+		if (stats.bosses.length) {
+			chars.forEach(({ name }) => {
+				if (stats.byBoss[name]) {
+					dataSource.push({
+						name,
+						key: name,
+						...stats.byBoss[name].reduce((acc, val) => {
+							acc[val.boss] = val.bestAmount.toFixed(2);
+							return acc;
+						}, {}),
+					});
+				}
+			});
+		}
+		return dataSource;
+	}, [stats, chars]);
 
 	return (
 		<>
@@ -78,14 +128,17 @@ export default function Index() {
 			<Content style={{ padding: '10px 50px' }}>
 				<ZoneSelector value={zoneId} onChange={setZoneId} />
 			</Content>
-			<Content style={{ padding: '10px 50px 20px' }}>
+			<Content style={{ padding: '10px 50px 10px' }}>
 				<BossSelector
 					bosses={stats && stats.bosses ? stats.bosses : undefined}
 					value={bosses[zoneId]}
 					onChange={onChangeSelectedBosses}
 				/>
 			</Content>
-			<Content style={{ padding: '0 50px 20px' }}>
+			<Content style={{ padding: '10px 50px 20px' }}>
+				<Table dataSource={dataSource} columns={columns} pagination={false} />
+			</Content>
+			{/*<Content style={{ padding: '10px 50px 20px' }}>
 				{chars?.map((char, index) => {
 					return (
 						<div key={index}>
@@ -99,7 +152,7 @@ export default function Index() {
 						</div>
 					);
 				})}
-			</Content>
+			</Content>*/}
 		</>
 	);
 }
