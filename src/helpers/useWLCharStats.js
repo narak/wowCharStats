@@ -3,11 +3,13 @@ import axios from 'axios';
 import useAuthToken from './useAuthToken';
 import enqueue from './enqueue';
 
+import { ZoneId } from '../constants/WarcraftLogs';
+
 function serialize(char) {
 	return `${char.region}:${char.server}:${char.name}`;
 }
 
-const query = ({ name, server, region }) => `
+const query = (zoneId, { name, server, region }) => `
 {
 	characterData {
 		character(
@@ -17,25 +19,38 @@ const query = ({ name, server, region }) => `
 		) {
 			zoneRankings(
 				difficulty: 4
-				zoneID: 26
+				zoneID: ${zoneId}
 			)
 		}
 	}
 }
 `;
 
-const _cache = {};
-window.wlDPSStats = _cache;
-console.log('See `wlDPSStats` to view fetched RIO data.');
+const _zoneCache = {};
+window.wlCharStats = _zoneCache;
+console.log('See `wlCharStats` to view fetched RIO data.');
 
-export default function useWLCharStats(chars) {
+export default function useWLCharStats({ zoneId, chars }) {
+	if (!_zoneCache[zoneId]) {
+		_zoneCache[zoneId] = {};
+	}
+
 	const token = useAuthToken();
-	const [vals, setVals] = useState({});
+	const [zoneVals, setZoneVals] = useState({});
+	const vals = zoneVals[zoneId];
+	const _cache = _zoneCache[zoneId];
 
 	useEffect(() => {
 		const config = {
 			headers: { Authorization: `Bearer ${token}` },
 		};
+
+		function setVals(_vals) {
+			setZoneVals(vals => ({
+				...vals,
+				[zoneId]: _vals(vals[zoneId]),
+			}));
+		}
 
 		chars.forEach(char => {
 			const key = serialize(char);
@@ -62,7 +77,7 @@ export default function useWLCharStats(chars) {
 				.post(
 					'https://www.warcraftlogs.com/api/v2/client',
 					{
-						query: query(char),
+						query: query(ZoneId[zoneId], char),
 					},
 					config
 				)
@@ -72,7 +87,12 @@ export default function useWLCharStats(chars) {
 						? { ...charData, name: char.name }
 						: {
 								message: 'Found no character stats',
+								isError: true,
 						  };
+
+					if (val?.data?.errors) {
+						console.error(val.data.errors.map(e => e.message));
+					}
 					enqueue(() =>
 						setVals(vals => ({
 							...vals,
@@ -82,7 +102,7 @@ export default function useWLCharStats(chars) {
 				})
 				.catch(console.error);
 		});
-	}, [chars, token, setVals, vals]);
+	}, [zoneId, chars, token, setZoneVals, vals, _cache]);
 
 	return vals;
 }

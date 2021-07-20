@@ -22,6 +22,7 @@ export default function useRaiderIOStats(char) {
 			axios
 				.get(url(char))
 				.then(resp => {
+					console.log('resp', resp);
 					_cache[key] = resp.data;
 					setRIOStats({
 						...rioStats,
