@@ -18,8 +18,6 @@ function consolidateByBoss(allStats) {
 	let byBoss = {},
 		bosses = {};
 
-	console.log('Consolidating');
-
 	for (const key in allStats) {
 		const val = allStats[key];
 
@@ -82,7 +80,7 @@ export default function Index() {
 			</Content>
 			<Content style={{ padding: '10px 50px 20px' }}>
 				<BossSelector
-					bosses={stats && stats.bosses ? Object.keys(stats.bosses) : undefined}
+					bosses={stats && stats.bosses ? stats.bosses : undefined}
 					value={bosses[zoneId]}
 					onChange={onChangeSelectedBosses}
 				/>
