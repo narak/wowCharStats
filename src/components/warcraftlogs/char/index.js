@@ -2,7 +2,7 @@
 
 import { /*useEffect, useState, */ useMemo } from 'react';
 
-import { Zone } from '../../../constants/WarcraftLogs';
+import { Zone, Difficulty } from '../../../constants/WarcraftLogs';
 
 import useLocalStorage from '../../../helpers/useLocalStorage';
 import useWLCharStats from '../../../helpers/useWLCharStats';
@@ -47,15 +47,22 @@ function consolidateByBoss(allStats) {
 console.log('See `wlDPSStats` to view consolidated stats.');
 
 export default function Index() {
-	const [chars, setChars] = useLocalStorage('warcraftlogs', []);
-	const [zoneId, setZoneId] = useLocalStorage('wlZoneId', Zone.CN);
+	const [chars, setChars] = useLocalStorage('wlTrackedChars', []);
+	const [zone, setZone] = useLocalStorage('wlZone', {
+		id: Zone.SOD,
+		difficulty: Difficulty.Heroic,
+	});
+	const { id: zoneId } = zone;
 	const [bosses, setBosses] = useLocalStorage('bosses', {});
 	const allStats = useWLCharStats({ zoneId, chars });
 
-	const bossMap = bosses[zoneId]?.reduce((acc, boss) => {
-		acc[boss] = true;
-		return acc;
-	}, {});
+	const bossMap =
+		bosses[zoneId] && bosses[zoneId].length
+			? bosses[zoneId].reduce((acc, boss) => {
+					acc[boss] = true;
+					return acc;
+			  }, {})
+			: null;
 
 	const stats = useMemo(() => {
 		return consolidateByBoss(allStats);
@@ -78,7 +85,7 @@ export default function Index() {
 		let columns;
 		if (stats.bosses.length) {
 			columns = stats.bosses.reduce((acc, boss) => {
-				if (bossMap[boss]) {
+				if (!bossMap || bossMap[boss]) {
 					acc.push({
 						title: boss,
 						dataIndex: boss,
@@ -121,7 +128,7 @@ export default function Index() {
 						name,
 						key: name,
 						...stats.byBoss[name].reduce((acc, val) => {
-							if (bossMap[val.boss]) {
+							if (!bossMap || bossMap[val.boss]) {
 								acc[val.boss] = val.bestAmount.toFixed(2);
 							}
 							return acc;
@@ -139,7 +146,7 @@ export default function Index() {
 				<AddChar onAdd={onAdd} />
 			</Content>
 			<Content style={{ padding: '10px 50px' }}>
-				<ZoneSelector value={zoneId} onChange={setZoneId} />
+				<ZoneSelector value={zone} onChange={setZone} />
 			</Content>
 			<Content style={{ padding: '10px 50px 10px' }}>
 				<BossSelector

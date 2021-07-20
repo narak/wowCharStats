@@ -7,7 +7,7 @@ export default function ZoneSelector({ bosses = [], value = [], onChange }) {
             <Select
                 mode="multiple"
                 allowClear
-                style={{ minWidth: 240 }}
+                style={{ minWidth: 700 }}
                 value={value}
                 onChange={onChange}
                 placeholder="Select Bosses"
