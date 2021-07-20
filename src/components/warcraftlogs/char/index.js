@@ -54,7 +54,7 @@ export default function Index() {
 	});
 	const { id: zoneId } = zone;
 	const [bosses, setBosses] = useLocalStorage('bosses', {});
-	const allStats = useWLCharStats({ zoneId, chars });
+	const allStats = useWLCharStats({ zone, chars });
 
 	const bossMap =
 		bosses[zoneId] && bosses[zoneId].length

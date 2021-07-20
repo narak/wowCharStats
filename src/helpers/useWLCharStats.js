@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import useAuthToken from './useAuthToken';
-import enqueue from './enqueue';
 
-import { ZoneId } from '../constants/WarcraftLogs';
+import { ZoneId, DifficultyId } from '../constants/WarcraftLogs';
 
-function serialize(char) {
-	return `${char.region}:${char.server}:${char.name}`;
+function serialize({ id, difficulty }, { name, server, region }) {
+	return `${id}:${difficulty}:${region}:${server}:${name}`;
 }
 
-const query = (zoneId, { name, server, region }) => `
+const query = ({ id, difficulty }, { name, server, region }) => `
 {
 	characterData {
 		character(
@@ -18,42 +17,34 @@ const query = (zoneId, { name, server, region }) => `
 			serverRegion: "${region}"
 		) {
 			zoneRankings(
-				difficulty: 4
-				zoneID: ${zoneId}
+				difficulty: ${DifficultyId[difficulty]}
+				zoneID: ${ZoneId[id]}
 			)
 		}
 	}
 }
 `;
 
-const _zoneCache = {};
-window.wlCharStats = _zoneCache;
+const _cache = {};
+window.wlCharStats = _cache;
 console.log('See `wlCharStats` to view fetched RIO data.');
 
-export default function useWLCharStats({ zoneId, chars }) {
-	if (!_zoneCache[zoneId]) {
-		_zoneCache[zoneId] = {};
-	}
-
+export default function useWLCharStats({ zone, chars }) {
 	const token = useAuthToken();
-	const [zoneVals, setZoneVals] = useState({});
-	const vals = zoneVals[zoneId];
-	const _cache = _zoneCache[zoneId];
+	const [vals, setVals] = useState({});
+	const [_zone, setZone] = useState(zone);
+	if (zone !== _zone) {
+		setZone(zone);
+		setVals({});
+	}
 
 	useEffect(() => {
 		const config = {
 			headers: { Authorization: `Bearer ${token}` },
 		};
 
-		function setVals(_vals) {
-			setZoneVals(vals => ({
-				...vals,
-				[zoneId]: _vals(vals[zoneId]),
-			}));
-		}
-
 		chars.forEach(char => {
-			const key = serialize(char);
+			const key = serialize(zone, char);
 
 			if (_cache[key]) {
 				if (!vals[key]) {
@@ -77,7 +68,7 @@ export default function useWLCharStats({ zoneId, chars }) {
 				.post(
 					'https://www.warcraftlogs.com/api/v2/client',
 					{
-						query: query(ZoneId[zoneId], char),
+						query: query(zone, char),
 					},
 					config
 				)
@@ -93,16 +84,14 @@ export default function useWLCharStats({ zoneId, chars }) {
 					if (val?.data?.errors) {
 						console.error(val.data.errors.map(e => e.message));
 					}
-					enqueue(() =>
-						setVals(vals => ({
-							...vals,
-							[key]: _cache[key],
-						}))
-					);
+					setVals(vals => ({
+						...vals,
+						[key]: _cache[key],
+					}));
 				})
 				.catch(console.error);
 		});
-	}, [zoneId, chars, token, setZoneVals, vals, _cache]);
+	}, [zone, chars, token, vals]);
 
 	return vals;
 }
