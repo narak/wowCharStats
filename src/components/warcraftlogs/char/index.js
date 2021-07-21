@@ -178,7 +178,7 @@ export default function Index() {
 			<Content style={{ padding: '20px 50px' }}>
 				<CopyPaste chars={chars} setChars={setChars} />
 			</Content>
-			<Content style={{ padding: '10px 50px' }}>
+			<Content style={{ padding: '10px 50px 50px' }}>
 				{failedChars.length ? (
 					<div style={{ padding: '0 1px' }}>
 						<strong>Failed to fetch</strong>:{' '}

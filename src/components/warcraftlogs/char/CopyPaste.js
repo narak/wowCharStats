@@ -1,9 +1,10 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Modal, Button, Input, Alert } from 'antd';
 const { TextArea } = Input;
 
 export default function CopyPaste({ chars, setChars }) {
+    const [copied, setCopied] = useState(false);
     const [showPaste, setShowPaste] = useState(false);
     const [config, setConfig] = useState('');
     const [error, setError] = useState();
@@ -17,6 +18,14 @@ export default function CopyPaste({ chars, setChars }) {
             console.log(error);
         }
     }
+
+    useEffect(() => {
+        if (copied) {
+            setTimeout(() => {
+                setCopied(false);
+            }, 2000);
+        }
+    }, [copied]);
 
     return (
         <>
@@ -36,8 +45,11 @@ export default function CopyPaste({ chars, setChars }) {
                     }}
                 />
             </Modal>
-            <CopyToClipboard text={useMemo(() => JSON.stringify(chars), [chars])}>
-                <Button>Copy</Button>
+            <CopyToClipboard
+                text={useMemo(() => JSON.stringify(chars), [chars])}
+                onCopy={() => setCopied(true)}
+            >
+                <Button>{!copied ? 'Copy' : 'Copied!'}</Button>
             </CopyToClipboard>
             <Button onClick={() => setShowPaste(true)}>Paste</Button>
         </>
