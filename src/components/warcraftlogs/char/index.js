@@ -1,12 +1,14 @@
 // import styles from './index.module.css';
 
 import { /*useEffect, useState, */ useMemo } from 'react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import { Zone, Difficulty } from '../../../constants/WarcraftLogs';
 import { ShortName } from '../../../constants/Boss';
 
 import useLocalStorage from '../../../helpers/useLocalStorage';
 import useWLCharStats from '../../../helpers/useWLCharStats';
+import { byBoss } from '../../../helpers/consolidateWLStats';
 
 import { Layout, Table } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
@@ -16,34 +18,8 @@ import BossSelector from './BossSelector';
 
 const { Content } = Layout;
 
-function consolidateByBoss(allStats) {
-	let byBoss = {},
-		bosses = {};
-
-	for (const key in allStats) {
-		const val = allStats[key];
-
-		if (val.isFetching || val.isError) continue;
-
-		const name = val.name,
-			rankings = val.zoneRankings?.rankings;
-
-		// eslint-disable-next-line
-		byBoss[name] = rankings?.map(rank => {
-			const boss = rank.encounter.name;
-
-			if (!bosses[boss]) {
-				bosses[boss] = true;
-			}
-
-			return {
-				boss,
-				bestAmount: rank.bestAmount,
-				bestSpec: rank.bestSpec,
-			};
-		});
-	}
-	return { byBoss: byBoss, bosses: Object.keys(bosses) };
+function cleanServer(realm) {
+	return realm.replace(/-|\s/g, '').toLowerCase();
 }
 
 console.log('See `wlDPSStats` to view consolidated stats.');
@@ -55,7 +31,7 @@ export default function Index() {
 		difficulty: Difficulty.Heroic,
 	});
 	const { id: zoneId } = zone;
-	const [bosses, setBosses] = useLocalStorage('bosses', {});
+	const [bosses, setBosses] = useLocalStorage('wlBosses', {});
 	const allStats = useWLCharStats({ zone, chars });
 
 	const bossMap =
@@ -67,12 +43,30 @@ export default function Index() {
 			: null;
 
 	const stats = useMemo(() => {
-		return consolidateByBoss(allStats);
+		return byBoss(allStats);
 	}, [allStats]);
 	window.wlDPSStats = stats;
 
 	function onAdd(char) {
-		setChars([...chars, char]);
+		let { name, server, region } = char;
+		name = name.toLowerCase();
+		server = cleanServer(server);
+		region = region.toLowerCase();
+		const exists = chars.some(_char => {
+			const _server = cleanServer(_char.server);
+			if (
+				_char.name.toLowerCase() === name &&
+				_server === server &&
+				_char.region.toLowerCase() === region
+			) {
+				console.warn('User already exists');
+				return true;
+			}
+		});
+
+		if (!exists) {
+			setChars([...chars, char]);
+		}
 	}
 
 	function onChangeSelectedBosses(value) {

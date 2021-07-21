@@ -6,7 +6,7 @@ import { Button, Input, Select } from 'antd';
 const { Option } = Select;
 
 export default function AddChar({ onAdd }) {
-    const [char, setChar] = useState({ region: 'us', server: '', name: '' });
+    const [char, setChar] = useState({ region: 'us', server: 'frostmourne', name: '' });
     function onSubmit(e) {
         e.preventDefault();
         onAdd(char);
