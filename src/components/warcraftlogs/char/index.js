@@ -39,6 +39,7 @@ function consolidateByBoss(allStats) {
 			return {
 				boss,
 				bestAmount: rank.bestAmount,
+				bestSpec: rank.bestSpec,
 			};
 		});
 	}
@@ -92,8 +93,21 @@ export default function Index() {
 						dataIndex: boss,
 						key: boss,
 						defaultSortOrder: 'descend',
+						render: (text, record, index) => {
+							if (+record[boss].value === 0) {
+								return '-';
+							} else {
+								return (
+									<>
+										{record[boss].value}
+										<br />
+										<small>{record[boss].spec}</small>
+									</>
+								);
+							}
+						},
 						sorter: (a, b) => {
-							return a[boss] - b[boss];
+							return a[boss].value - b[boss].value;
 						},
 					});
 				}
@@ -130,7 +144,10 @@ export default function Index() {
 						key: name,
 						...stats.byBoss[name].reduce((acc, val) => {
 							if (!bossMap || bossMap[val.boss]) {
-								acc[val.boss] = val.bestAmount.toFixed(2);
+								acc[val.boss] = {
+									value: val.bestAmount.toFixed(2),
+									spec: val.bestSpec,
+								};
 							}
 							return acc;
 						}, {}),
