@@ -1,6 +1,6 @@
 // import styles from './index.module.css';
 
-import { /*useEffect, useState, */ useMemo } from 'react';
+import { /*useEffect, useState, */ useMemo, useCallback } from 'react';
 
 import { Zone, Difficulty } from '../../../constants/WarcraftLogs';
 import { ShortName } from '../../../constants/Boss';
@@ -9,7 +9,7 @@ import useLocalStorage from '../../../helpers/useLocalStorage';
 import useWLCharStats from '../../../helpers/useWLCharStats';
 import { byBoss } from '../../../helpers/consolidateWLStats';
 
-import { Layout, Table } from 'antd';
+import { Layout, Table, Button } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
 import AddChar from '../../common/AddChar';
 import ZoneSelector from './ZoneSelector';
@@ -75,11 +75,14 @@ export default function Index() {
 		setBosses({ ...bosses, [zoneId]: value });
 	}
 
-	const columns = useMemo(() => {
-		function onDelete(name) {
+	const onDelete = useCallback(
+		name => {
 			setChars(chars.filter(char => char.name !== name));
-		}
+		},
+		[setChars, chars]
+	);
 
+	const columns = useMemo(() => {
 		let columns;
 		if (stats.bosses.length) {
 			columns = stats.bosses.reduce((acc, boss) => {
@@ -126,7 +129,7 @@ export default function Index() {
 				},
 			},
 		];
-	}, [stats, chars, setChars, bossMap]);
+	}, [stats, bossMap, onDelete]);
 
 	const [dataSource, failedChars] = useMemo(() => {
 		const dataSource = [];
@@ -179,7 +182,13 @@ export default function Index() {
 				{failedChars.length ? (
 					<div style={{ padding: '0 1px' }}>
 						<strong>Failed to fetch</strong>:{' '}
-						{failedChars.map(char => char?.name).join(', ')}
+						{failedChars.map(char =>
+							char ? (
+								<Button type="text" onClick={onDelete.bind(this, char.name)}>
+									{char.name}
+								</Button>
+							) : null
+						)}
 					</div>
 				) : null}
 				<Table dataSource={dataSource} columns={columns} pagination={false} />
