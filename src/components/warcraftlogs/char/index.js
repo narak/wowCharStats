@@ -88,7 +88,6 @@ export default function Index() {
 						title: ShortName[boss],
 						dataIndex: boss,
 						key: boss,
-						defaultSortOrder: 'descend',
 						render: (text, record, index) => {
 							if (+record[boss].value === 0) {
 								return '-';
