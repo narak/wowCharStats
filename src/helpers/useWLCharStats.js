@@ -75,11 +75,12 @@ export default function useWLCharStats({ zone, chars }) {
 				.then(val => {
 					const charData = val?.data?.data?.characterData?.character;
 					_cache[key] = charData
-						? { ...charData, name: char.name }
+						? { ...charData, ...zone, ...char }
 						: {
 								message: 'Found no character stats',
 								isError: true,
-								name: char.name,
+								...zone,
+								...char,
 						  };
 
 					if (val?.data?.errors) {

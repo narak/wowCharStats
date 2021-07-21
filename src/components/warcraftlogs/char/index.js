@@ -76,8 +76,8 @@ export default function Index() {
 	}
 
 	const columns = useMemo(() => {
-		function onDelete(index) {
-			setChars([...chars.slice(0, index), ...chars.slice(index + 1)]);
+		function onDelete(name) {
+			setChars(chars.filter(char => char.name !== name));
 		}
 
 		let columns;
@@ -121,8 +121,8 @@ export default function Index() {
 			{
 				dataIndex: 'action',
 				key: 'action',
-				render: (text, record, index) => {
-					return <DeleteFilled onClick={onDelete.bind(this, index)} />;
+				render: (text, record) => {
+					return <DeleteFilled onClick={onDelete.bind(this, record.name)} />;
 				},
 			},
 		];
