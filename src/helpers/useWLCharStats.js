@@ -79,6 +79,7 @@ export default function useWLCharStats({ zone, chars }) {
 						: {
 								message: 'Found no character stats',
 								isError: true,
+								name: char.name,
 						  };
 
 					if (val?.data?.errors) {

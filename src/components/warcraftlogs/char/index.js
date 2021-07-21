@@ -128,16 +128,18 @@ export default function Index() {
 		];
 	}, [stats, chars, setChars, bossMap]);
 
-	const dataSource = useMemo(() => {
+	const [dataSource, failedChars] = useMemo(() => {
 		const dataSource = [];
+		const failedChars = [];
 
 		if (stats.bosses.length) {
 			chars.forEach(({ name }) => {
-				if (stats.byBoss[name]) {
+				const bossStats = stats.byBoss[name];
+				if (bossStats && !bossStats.isError) {
 					dataSource.push({
 						name,
 						key: name,
-						...stats.byBoss[name].reduce((acc, val) => {
+						...bossStats.reduce((acc, val) => {
 							if (!bossMap || bossMap[val.boss]) {
 								acc[val.boss] = {
 									value: val.bestAmount.toFixed(2),
@@ -147,10 +149,12 @@ export default function Index() {
 							return acc;
 						}, {}),
 					});
+				} else {
+					failedChars.push(bossStats);
 				}
 			});
 		}
-		return dataSource;
+		return [dataSource, failedChars];
 	}, [stats, chars, bossMap]);
 
 	return (
@@ -171,7 +175,13 @@ export default function Index() {
 			<Content style={{ padding: '20px 50px' }}>
 				<CopyPaste chars={chars} setChars={setChars} />
 			</Content>
-			<Content style={{ padding: '20px 50px' }}>
+			<Content style={{ padding: '10px 50px' }}>
+				{failedChars.length ? (
+					<div style={{ padding: '0 1px' }}>
+						<strong>Failed to fetch</strong>:{' '}
+						{failedChars.map(char => char?.name).join(', ')}
+					</div>
+				) : null}
 				<Table dataSource={dataSource} columns={columns} pagination={false} />
 			</Content>
 		</>
