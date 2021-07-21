@@ -1,7 +1,6 @@
 // import styles from './index.module.css';
 
 import { /*useEffect, useState, */ useMemo } from 'react';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import { Zone, Difficulty } from '../../../constants/WarcraftLogs';
 import { ShortName } from '../../../constants/Boss';
@@ -15,6 +14,7 @@ import { DeleteFilled } from '@ant-design/icons';
 import AddChar from '../../common/AddChar';
 import ZoneSelector from './ZoneSelector';
 import BossSelector from './BossSelector';
+import CopyPaste from './CopyPaste';
 
 const { Content } = Layout;
 
@@ -61,6 +61,8 @@ export default function Index() {
 			) {
 				console.warn('User already exists');
 				return true;
+			} else {
+				return false;
 			}
 		});
 
@@ -166,6 +168,9 @@ export default function Index() {
 					value={bosses[zoneId]}
 					onChange={onChangeSelectedBosses}
 				/>
+			</Content>
+			<Content style={{ padding: '20px 50px' }}>
+				<CopyPaste chars={chars} setChars={setChars} />
 			</Content>
 			<Content style={{ padding: '20px 50px' }}>
 				<Table dataSource={dataSource} columns={columns} pagination={false} />
