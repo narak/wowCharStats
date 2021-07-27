@@ -28,7 +28,7 @@ function getToken(cb) {
 	});
 }
 
-export default function useAuthToken() {
+export default function useWCLAuthToken() {
 	const [token, setToken] = useLocalStorage('auth_token');
 
 	if (!token) {

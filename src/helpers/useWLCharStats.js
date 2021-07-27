@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import useAuthToken from './useAuthToken';
+import useWCLAuthToken from './useWCLAuthToken';
 
 import { ZoneId, DifficultyId } from '../constants/WarcraftLogs';
 
@@ -31,7 +31,7 @@ window.wlCharStats = _cache;
 console.log('See `wlCharStats` to view fetched RIO data.');
 
 export default function useWLCharStats({ zone, chars }) {
-	const token = useAuthToken();
+	const token = useWCLAuthToken();
 	const [vals, setVals] = useState({});
 	const [_zone, setZone] = useState(zone);
 	if (zone !== _zone) {

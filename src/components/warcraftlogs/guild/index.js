@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 
-import useAuthToken from '../../helpers/useAuthToken';
+import useWCLAuthToken from '../../helpers/useWCLAuthToken';
 import useLocalStorage from '../../helpers/useLocalStorage';
 
 import Fights from './Fights';
@@ -51,7 +51,7 @@ function groupByZone(atts) {
 }
 
 export default function Index() {
-	const token = useAuthToken();
+	const token = useWCLAuthToken();
 	const [response, setResponse] = useState();
 	const [guild, setGuild] = useLocalStorage('guild', {
 		guild: 'season zero',

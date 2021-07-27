@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 
-import useAuthToken from '../../helpers/useAuthToken';
+import useWCLAuthToken from '../../helpers/useWCLAuthToken';
 
 // import { Layout } from 'antd';
 // const { Content } = Layout;
@@ -32,7 +32,7 @@ const Fight = styled.span`
 `;
 
 export default function Fights({ code }) {
-	const token = useAuthToken();
+	const token = useWCLAuthToken();
 	const [resp, setResp] = useState();
 
 	useEffect(() => {

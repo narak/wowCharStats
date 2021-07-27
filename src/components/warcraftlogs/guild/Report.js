@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import useAuthToken from '../../helpers/useAuthToken';
+import useWCLAuthToken from '../../helpers/useWCLAuthToken';
 
 import { Layout } from 'antd';
 const { Content } = Layout;
@@ -25,7 +25,7 @@ const reportQuery = ({ code }) => `
 `;
 
 export default function Report() {
-	const token = useAuthToken();
+	const token = useWCLAuthToken();
 	const [resp, setResp] = useState();
 
 	useEffect(() => {
