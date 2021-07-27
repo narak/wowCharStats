@@ -31,7 +31,7 @@ const _cache = {};
 window.wlCharStats = _cache;
 console.log('See `wlCharStats` to view fetched RIO data.');
 
-export default function useWLCharStats({ zone, chars }) {
+export default function useWCLCharStats({ zone, chars }) {
 	const token = useWCLAuthToken();
 	const [vals, setVals] = useState({});
 	const [_zone, setZone] = useState(zone);

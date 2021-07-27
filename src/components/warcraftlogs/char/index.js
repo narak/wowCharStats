@@ -6,7 +6,7 @@ import { Zone, Difficulty } from '../../../constants/WarcraftLogs';
 import { ShortName } from '../../../constants/Boss';
 
 import useLocalStorage from '../../../helpers/useLocalStorage';
-import useWLCharStats from '../../../helpers/useWLCharStats';
+import useWCLCharStats from '../../../helpers/useWCLCharStats';
 import { byBoss } from '../../../helpers/consolidateWLStats';
 
 import { Layout, Table, Button } from 'antd';
@@ -32,7 +32,7 @@ export default function Index() {
 	});
 	const { id: zoneId } = zone;
 	const [bosses, setBosses] = useLocalStorage('wlBosses', {});
-	const allStats = useWLCharStats({ zone, chars });
+	const allStats = useWCLCharStats({ zone, chars });
 
 	const bossMap =
 		bosses[zoneId] && bosses[zoneId].length
