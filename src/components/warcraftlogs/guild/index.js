@@ -2,8 +2,8 @@ import { useEffect, useState, useMemo } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 
-import useWCLAuthToken from '../../helpers/useWCLAuthToken';
-import useLocalStorage from '../../helpers/useLocalStorage';
+import useWCLAuthToken from '../../utils/useWCLAuthToken';
+import useLocalStorage from '../../utils/useLocalStorage';
 
 import Fights from './Fights';
 import SelectGuild from './SelectGuild';

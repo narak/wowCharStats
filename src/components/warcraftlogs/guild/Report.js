@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import useWCLAuthToken from '../../helpers/useWCLAuthToken';
+import useWCLAuthToken from '../../utils/useWCLAuthToken';
 
 import { Layout } from 'antd';
 const { Content } = Layout;

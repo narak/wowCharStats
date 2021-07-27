@@ -1,6 +1,6 @@
 import styles from './app.module.css';
 
-import useLocalStorage from '../helpers/useLocalStorage';
+import useLocalStorage from '../utils/useLocalStorage';
 
 import RaiderIO from './raiderio';
 import WarcraftLogs from './warcraftlogs';

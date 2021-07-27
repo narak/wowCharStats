@@ -3,7 +3,7 @@ import styles from './char.module.css';
 import { Fragment } from 'react';
 import styled from 'styled-components';
 
-import useRaiderIOStats from '../../helpers/useRaiderIOStats';
+import useRaiderIOStats from '../../utils/useRaiderIOStats';
 import { DeleteFilled } from '@ant-design/icons';
 import { Card, Avatar, Divider } from 'antd';
 

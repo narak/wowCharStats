@@ -3,14 +3,12 @@
 import { /*useEffect, useState, */ useMemo, useCallback } from 'react';
 
 import { Zone, Difficulty } from '../../../constants/WarcraftLogs';
-import { ShortName } from '../../../constants/Boss';
 
-import useLocalStorage from '../../../helpers/useLocalStorage';
-import useWCLCharStats from '../../../helpers/useWCLCharStats';
-import { byBoss } from '../../../helpers/consolidateWLStats';
+import useLocalStorage from '../../../utils/useLocalStorage';
+import useWCLCharStats from '../../../utils/useWCLCharStats';
+import { byBoss, getRows, getData } from '../../../helpers/consolidateWCLStats';
 
 import { Layout, Table, Button } from 'antd';
-import { DeleteFilled } from '@ant-design/icons';
 import AddChar from '../../common/AddChar';
 import ZoneSelector from './ZoneSelector';
 import BossSelector from './BossSelector';
@@ -83,82 +81,12 @@ export default function Index() {
 	);
 
 	const columns = useMemo(() => {
-		let columns;
-		if (stats.bosses.length) {
-			columns = stats.bosses.reduce((acc, boss) => {
-				if (!bossMap || bossMap[boss]) {
-					acc.push({
-						title: ShortName[boss],
-						dataIndex: boss,
-						key: boss,
-						render: (text, record, index) => {
-							if (+record[boss].value === 0) {
-								return '-';
-							} else {
-								return (
-									<>
-										{record[boss].value}
-										<br />
-										<small>{record[boss].spec}</small>
-									</>
-								);
-							}
-						},
-						sorter: (a, b) => {
-							return a[boss].value - b[boss].value;
-						},
-					});
-				}
-				return acc;
-			}, []);
-		} else {
-			columns = [];
-		}
-		return [
-			{
-				title: 'Name',
-				dataIndex: 'name',
-				key: 'name',
-			},
-			...columns,
-			{
-				dataIndex: 'action',
-				key: 'action',
-				render: (text, record) => {
-					return <DeleteFilled onClick={onDelete.bind(this, record.name)} />;
-				},
-			},
-		];
+		return getRows({ stats, bossMap, onDelete });
 	}, [stats, bossMap, onDelete]);
 
 	const [dataSource, failedChars] = useMemo(() => {
-		const dataSource = [];
-		const failedChars = [];
-
-		if (stats.bosses.length) {
-			chars.forEach(({ name }) => {
-				const bossStats = stats.byBoss[name];
-				if (bossStats && !bossStats.isError) {
-					dataSource.push({
-						name,
-						key: name,
-						...bossStats.reduce((acc, val) => {
-							if (!bossMap || bossMap[val.boss]) {
-								acc[val.boss] = {
-									value: val.bestAmount.toFixed(2),
-									spec: val.bestSpec,
-								};
-							}
-							return acc;
-						}, {}),
-					});
-				} else {
-					failedChars.push(bossStats);
-				}
-			});
-		}
-		return [dataSource, failedChars];
-	}, [stats, chars, bossMap]);
+		return getData({ stats, chars, bossMap, ...zone });
+	}, [stats, chars, bossMap, zone]);
 
 	return (
 		<>
