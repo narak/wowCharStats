@@ -20,6 +20,7 @@ const query = ({ id, difficulty }, { name, server, region }) => `
 				difficulty: ${DifficultyId[difficulty]}
 				zoneID: ${ZoneId[id]}
 				role: DPS
+				metric: dps
 			)
 		}
 	}
