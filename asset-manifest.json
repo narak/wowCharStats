@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/wowCharStats/static/css/main.2aafa611.chunk.css",
-    "main.js": "/wowCharStats/static/js/main.990aedab.chunk.js",
-    "main.js.map": "/wowCharStats/static/js/main.990aedab.chunk.js.map",
+    "main.js": "/wowCharStats/static/js/main.f620e350.chunk.js",
+    "main.js.map": "/wowCharStats/static/js/main.f620e350.chunk.js.map",
     "runtime-main.js": "/wowCharStats/static/js/runtime-main.ee719d08.js",
     "runtime-main.js.map": "/wowCharStats/static/js/runtime-main.ee719d08.js.map",
     "static/css/2.5bc206ac.chunk.css": "/wowCharStats/static/css/2.5bc206ac.chunk.css",
@@ -18,6 +18,6 @@
     "static/css/2.5bc206ac.chunk.css",
     "static/js/2.6c814118.chunk.js",
     "static/css/main.2aafa611.chunk.css",
-    "static/js/main.990aedab.chunk.js"
+    "static/js/main.f620e350.chunk.js"
   ]
 }
