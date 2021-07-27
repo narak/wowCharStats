@@ -1,4 +1,4 @@
-// import styles from './index.module.css';
+import styles from './index.module.css';
 
 import { /*useEffect, useState, */ useMemo, useCallback } from 'react';
 
@@ -90,6 +90,9 @@ export default function Index() {
 
 	return (
 		<>
+			<div className={styles.copyPaste}>
+				<CopyPaste chars={chars} setChars={setChars} />
+			</div>
 			<Content style={{ padding: '50px 50px 10px' }}>
 				<AddChar onAdd={onAdd} />
 			</Content>
@@ -102,9 +105,6 @@ export default function Index() {
 					value={bosses[zoneId]}
 					onChange={onChangeSelectedBosses}
 				/>
-			</Content>
-			<Content style={{ padding: '20px 50px' }}>
-				<CopyPaste chars={chars} setChars={setChars} />
 			</Content>
 			<Content style={{ padding: '10px 50px 50px' }}>
 				{failedChars.length ? (

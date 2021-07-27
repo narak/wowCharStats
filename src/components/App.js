@@ -35,7 +35,9 @@ function App() {
                     <Menu.Item key={Tabs.WARCRAFTLOGS}>Warcraft Logs</Menu.Item>
                 </Menu>
             </Header>
-            <Tab />
+            <div style={{ position: 'relative' }}>
+                <Tab />
+            </div>
         </Layout>
     );
 }
