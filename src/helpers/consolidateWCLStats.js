@@ -83,6 +83,7 @@ export function getRows({ stats, bossMap, onDelete }) {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
+            fixed: 'left',
             render: (text, record) => {
                 return (
                     <a href={getWclUrl(record)} target="_blank" rel="noreferrer">
@@ -95,6 +96,8 @@ export function getRows({ stats, bossMap, onDelete }) {
         {
             dataIndex: 'action',
             key: 'action',
+            fixed: 'right',
+            width: '50px',
             render: (text, record) => {
                 return <DeleteFilled onClick={onDelete.bind(this, record.name)} />;
             },

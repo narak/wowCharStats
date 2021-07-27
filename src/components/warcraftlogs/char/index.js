@@ -119,7 +119,12 @@ export default function Index() {
 						)}
 					</div>
 				) : null}
-				<Table dataSource={dataSource} columns={columns} pagination={false} />
+				<Table
+					dataSource={dataSource}
+					columns={columns}
+					pagination={false}
+					scroll={{ x: 1440, y: 750 }}
+				/>
 			</Content>
 		</>
 	);
