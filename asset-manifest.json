@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/wowCharStats/static/css/main.1875675f.chunk.css",
-    "main.js": "/wowCharStats/static/js/main.28e99b1d.chunk.js",
-    "main.js.map": "/wowCharStats/static/js/main.28e99b1d.chunk.js.map",
+    "main.css": "/wowCharStats/static/css/main.953bed2e.chunk.css",
+    "main.js": "/wowCharStats/static/js/main.581c219d.chunk.js",
+    "main.js.map": "/wowCharStats/static/js/main.581c219d.chunk.js.map",
     "runtime-main.js": "/wowCharStats/static/js/runtime-main.ee719d08.js",
     "runtime-main.js.map": "/wowCharStats/static/js/runtime-main.ee719d08.js.map",
     "static/css/2.5bc206ac.chunk.css": "/wowCharStats/static/css/2.5bc206ac.chunk.css",
-    "static/js/2.a2fc04fb.chunk.js": "/wowCharStats/static/js/2.a2fc04fb.chunk.js",
-    "static/js/2.a2fc04fb.chunk.js.map": "/wowCharStats/static/js/2.a2fc04fb.chunk.js.map",
+    "static/js/2.dcd60dd3.chunk.js": "/wowCharStats/static/js/2.dcd60dd3.chunk.js",
+    "static/js/2.dcd60dd3.chunk.js.map": "/wowCharStats/static/js/2.dcd60dd3.chunk.js.map",
     "index.html": "/wowCharStats/index.html",
     "static/css/2.5bc206ac.chunk.css.map": "/wowCharStats/static/css/2.5bc206ac.chunk.css.map",
-    "static/css/main.1875675f.chunk.css.map": "/wowCharStats/static/css/main.1875675f.chunk.css.map",
-    "static/js/2.a2fc04fb.chunk.js.LICENSE.txt": "/wowCharStats/static/js/2.a2fc04fb.chunk.js.LICENSE.txt"
+    "static/css/main.953bed2e.chunk.css.map": "/wowCharStats/static/css/main.953bed2e.chunk.css.map",
+    "static/js/2.dcd60dd3.chunk.js.LICENSE.txt": "/wowCharStats/static/js/2.dcd60dd3.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.ee719d08.js",
     "static/css/2.5bc206ac.chunk.css",
-    "static/js/2.a2fc04fb.chunk.js",
-    "static/css/main.1875675f.chunk.css",
-    "static/js/main.28e99b1d.chunk.js"
+    "static/js/2.dcd60dd3.chunk.js",
+    "static/css/main.953bed2e.chunk.css",
+    "static/js/main.581c219d.chunk.js"
   ]
 }
