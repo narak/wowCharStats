@@ -1,8 +1,5 @@
-import axios from 'axios';
-
 const LS_KEY = 'wcs::apiCache';
-const lsValue = JSON.parse(window.localStorage.getItem(LS_KEY) || '{}');
-const _cache = lsValue || {};
+let _cache = JSON.parse(window.localStorage.getItem(LS_KEY) || '{}');
 
 function set(key, value) {
     _cache[key] = value;
@@ -20,4 +17,9 @@ export default function promiseCache(getPromise, cacheKey) {
             return resp;
         });
     }
+}
+
+export function dropCache() {
+    window.localStorage.setItem(LS_KEY, '{}');
+    _cache = {};
 }

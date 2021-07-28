@@ -7,6 +7,7 @@ import { Zone, Difficulty } from '../../../constants/WarcraftLogs';
 import useLocalStorage from '../../../utils/useLocalStorage';
 import useWCLCharStats from '../../../utils/useWCLCharStats';
 import { byBoss, getRows, getData } from '../../../helpers/consolidateWCLStats';
+import { dropCache } from '../../../utils/promiseCache';
 
 import { Layout, Table, Button } from 'antd';
 import AddChar from '../../common/AddChar';
@@ -88,6 +89,11 @@ export default function Index() {
 		return getData({ stats, chars, bossMap, ...zone });
 	}, [stats, chars, bossMap, zone]);
 
+	function onDropCache() {
+		dropCache();
+		window.location.reload();
+	}
+
 	return (
 		<>
 			<div className={styles.copyPaste}>
@@ -107,6 +113,15 @@ export default function Index() {
 				/>
 			</Content>
 			<Content style={{ padding: '10px 50px 50px' }}>
+				<Button
+					style={{
+						float: 'right',
+					}}
+					type="text"
+					onClick={onDropCache}
+				>
+					Refresh Stats
+				</Button>
 				{failedChars.length ? (
 					<div style={{ padding: '0 1px' }}>
 						<strong>Failed to fetch</strong>:{' '}
