@@ -112,7 +112,11 @@ export default function Index() {
 						<strong>Failed to fetch</strong>:{' '}
 						{failedChars.map(char =>
 							char ? (
-								<Button type="text" onClick={onDelete.bind(this, char.name)}>
+								<Button
+									type="text"
+									onClick={onDelete.bind(this, char.name)}
+									key={char.name}
+								>
 									{char.name}
 								</Button>
 							) : null

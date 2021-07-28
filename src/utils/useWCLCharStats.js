@@ -41,6 +41,9 @@ export default function useWCLCharStats({ zone, chars }) {
 	}
 
 	useEffect(() => {
+		if (!token) {
+			return;
+		}
 		const config = {
 			headers: { Authorization: `Bearer ${token}` },
 		};

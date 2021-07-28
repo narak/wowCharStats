@@ -1,8 +1,8 @@
 import axios from 'axios';
 import useLocalStorage from './useLocalStorage';
 
-const clientID = '939c7296-5335-40c4-9338-b213bfcadc92';
-const clientSecret = '1SyEyndtXPGyQIXWPz4w4dheqOeKSKk22hBCQzUP';
+const clientID = '9402436a-a9b0-40aa-a6b4-dad81957f72c';
+const clientSecret = 'G2LZW1CyLjLQS8kMZjF4gdKfP3vgRRj18K3b2nfB';
 const authBody = new FormData();
 authBody.append('grant_type', 'client_credentials');
 
@@ -29,7 +29,7 @@ function getToken(cb) {
 }
 
 export default function useWCLAuthToken() {
-	const [token, setToken] = useLocalStorage('auth_token');
+	const [token, setToken] = useLocalStorage('wclAuthToken');
 
 	if (!token) {
 		getToken(setToken);
