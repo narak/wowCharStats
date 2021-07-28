@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 import useWCLAuthToken from './useWCLAuthToken';
+import promiseCache from './promiseCache';
 
 import { ZoneId, DifficultyId } from '../constants/WarcraftLogs';
 
@@ -69,16 +70,21 @@ export default function useWCLCharStats({ zone, chars }) {
 				[key]: _cache[key],
 			}));
 
-			axios
-				.post(
-					'https://www.warcraftlogs.com/api/v2/client',
-					{
-						query: query(zone, char),
-					},
-					config
-				)
-				.then(val => {
-					const charData = val?.data?.data?.characterData?.character;
+			promiseCache(
+				() =>
+					axios
+						.post(
+							'https://www.warcraftlogs.com/api/v2/client',
+							{
+								query: query(zone, char),
+							},
+							config
+						)
+						.then(resp => resp?.data),
+				`${zone.id},${zone.difficulty},${char.name},${char.server},${char.region}`
+			)
+				.then(data => {
+					const charData = data?.data?.characterData?.character;
 					_cache[key] = charData
 						? { ...charData, ...zone, ...char }
 						: {
@@ -88,8 +94,8 @@ export default function useWCLCharStats({ zone, chars }) {
 								...char,
 						  };
 
-					if (val?.data?.errors) {
-						console.error(val.data.errors.map(e => e.message));
+					if (data?.errors) {
+						console.error(data.errors.map(e => e.message));
 					}
 					setVals(vals => ({
 						...vals,
